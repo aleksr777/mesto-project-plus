@@ -1,34 +1,34 @@
-import express from 'express';
-import mongoose from 'mongoose';
+import express, { Request, Response } from 'express'
+import mongoose from 'mongoose'
 
-const app = express();
-const PORT = 3000;
+const { PORT = 3000 } = process.env
+const app = express()
 
 // Подключение к MongoDB
-mongoose.connect('mongodb://localhost:27017/mestodb');
+mongoose.connect( 'mongodb://localhost:27017/mestodb' )
 
 // Получаем объект подключения для прослушивания событий
-const db = mongoose.connection;
+const db = mongoose.connection
 
 // Ошибка подключения
-db.on('error', (error) => {
-  console.error('Connection error:', error);
-});
+db.on( 'error', ( error ) => {
+  console.error( 'Connection error:', error )
+} )
 
 // Успешное подключение
-db.once('open', () => {
-  console.log('Connected to MongoDB successfully!');
-});
+db.once( 'open', () => {
+  console.log( 'Connected to MongoDB successfully!' )
+} )
 
 // Подключение закрыто
-db.on('disconnected', () => {
-  console.log('Disconnected from MongoDB');
-});
+db.on( 'disconnected', () => {
+  console.log( 'Disconnected from MongoDB' )
+} )
 
-app.get('/', (req, res) => {
-  res.send('Hello, World!');
-});
+app.get( '/', ( req: Request, res: Response ) => {
+  res.send( 'Hello, World!' )
+} )
 
-app.listen(PORT, () => {
-  console.log(`Server is running at http://localhost:${PORT}`);
-});
+app.listen( PORT, () => {
+  console.log( `Server is running at http://localhost:${PORT}` )
+} )
