@@ -1,4 +1,5 @@
-import express, { Request, Response } from 'express'
+import express from 'express'
+import router from './routes/routes'
 import mongoose from 'mongoose'
 
 const { PORT = 3000 } = process.env
@@ -10,25 +11,20 @@ mongoose.connect( 'mongodb://localhost:27017/mestodb' )
 // Получаем объект подключения для прослушивания событий
 const db = mongoose.connection
 
-// Ошибка подключения
 db.on( 'error', ( error ) => {
   console.error( 'Connection error:', error )
 } )
 
-// Успешное подключение
 db.once( 'open', () => {
   console.log( 'Connected to MongoDB successfully!' )
 } )
 
-// Подключение закрыто
 db.on( 'disconnected', () => {
   console.log( 'Disconnected from MongoDB' )
 } )
 
-app.get( '/', ( req: Request, res: Response ) => {
-  res.send( 'Hello, World!' )
-} )
+app.use( '/', router )
 
-app.listen( PORT, () => {
+app.listen( +PORT, () => {
   console.log( `Server is running at http://localhost:${PORT}` )
 } )
