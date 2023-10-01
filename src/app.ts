@@ -4,10 +4,10 @@ import mongoose from 'mongoose'
 
 const { PORT = 3000 } = process.env
 const app = express()
+app.use(express.json())
 
 // Подключение к MongoDB
 mongoose.connect( 'mongodb://localhost:27017/mestodb' )
-
 // Получаем объект подключения для прослушивания событий
 const db = mongoose.connection
 
