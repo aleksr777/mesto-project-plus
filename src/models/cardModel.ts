@@ -1,14 +1,14 @@
 import { model, Schema } from 'mongoose'
 
 interface ICard {
-  name: string;
-  link: string;
-  owner: Schema.Types.ObjectId;
-  likes?: Schema.Types.ObjectId[];
-  createdAt?: Date;
+  name: string
+  link: string
+  owner: Schema.Types.ObjectId
+  likes?: Schema.Types.ObjectId[]
+  createdAt?: Date
 }
 
-const cardSchema = new Schema<ICard>({
+const cardSchema = new Schema<ICard>( {
   name: {
     type: String,
     required: true,
@@ -31,7 +31,7 @@ const cardSchema = new Schema<ICard>({
     type: Date,
     default: Date.now,
   },
-});
+} )
 
 
 export default model<ICard>( 'card', cardSchema )
