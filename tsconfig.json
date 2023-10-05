@@ -1,21 +1,21 @@
 {
-  "compilerOptions": {
-    "baseUrl": "./src",
-    "outDir": "./dist", /* Specify an output folder for all emitted files. */
-    "target": "es6",
-    "module": "commonjs", /* Specify what module code is generated. */
-    "moduleResolution": "node", /* Specify how TypeScript looks up a file from a given module specifier. */
-    "allowJs": true, /* Allow JavaScript files to be a part of your program. Use the 'checkJS' option to get errors from these files. */
-    "checkJs": false, /* Enable error reporting in type-checked JavaScript files. */
-    "esModuleInterop": true, /* Emit additional JavaScript to ease support for importing CommonJS modules. This enables 'allowSyntheticDefaultImports' for type compatibility. */
-    "forceConsistentCasingInFileNames": true, /* Ensure that casing is correct in imports. */
-    "strict": true, /* Enable all strict type-checking options. */
-    "skipLibCheck": true /* Skip type checking all .d.ts files. */
-  },
-  "include": [
-    "src/**/*.ts"
-  ],
-  "exclude": [
-    "node_modules"
-  ],
+	"compilerOptions": {
+		"baseUrl": "./src", /* Указать базовый путь для всех создаваемых файлов. */
+		"outDir": "./dist", /* Указать папку для сохранения всех создаваемых файлов. */
+		"target": "es6", /* Задать версию ECMAScript, на которую будет транслироваться код. */
+		"module": "commonjs", /* Задать, какой тип модульного кода будет сгенерирован. */
+		"moduleResolution": "node", /* Задать способ поиска файла на основе импортов в TypeScript. */
+		"allowJs": true, /* Разрешить использование JavaScript файлов в вашей программе. Используйте опцию 'checkJS' для проверки ошибок в этих файлах. */
+		"checkJs": false, /* Включить отчет об ошибках в проверенных типах JavaScript файлов. */
+		"esModuleInterop": true, /* Генерировать дополнительный JavaScript для облегчения импорта модулей CommonJS. Это также включает опцию 'allowSyntheticDefaultImports' для совместимости с типами. */
+		"forceConsistentCasingInFileNames": true, /* Гарантировать корректный регистр символов в импортах. */
+		"strict": true, /* Включить все опции строгой проверки типов. */
+		"skipLibCheck": true /* Пропустить проверку типов всех файлов с расширением .d.ts. */
+	},
+	"include": [
+		"src/**/*.ts"
+	],
+	"exclude": [
+		"node_modules"
+	]
 }

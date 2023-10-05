@@ -1,50 +1,45 @@
-import express, { Request, Response, NextFunction } from 'express'
-import router from './routes/routes'
-import mongoose from 'mongoose'
+import express, { Request, Response, NextFunction } from 'express';
+import mongoose from 'mongoose';
+import routes from "./routes/index";
 
-const { PORT = 3000 } = process.env
-const app = express()
-app.use( express.json() )
-
-// Подключение к MongoDB
-mongoose.connect( 'mongodb://localhost:27017/mestodb' )
-// Получаем объект подключения для прослушивания событий
-const db = mongoose.connection
-
-db.on( 'error', ( error ) => {
-  console.error( 'Connection error:', error )
-} )
-
-db.once( 'open', () => {
-  console.log( 'Connected to MongoDB successfully!' )
-} )
-
-db.on( 'disconnected', () => {
-  console.log( 'Disconnected from MongoDB' )
-} )
+const { PORT = 3000 } = process.env;
+const app = express();
 
 // Объявляем пользовательский тип для объекта user
 declare global {
   namespace Express {
     interface Request {
       user: {
-        _id: string
-      }
+        _id: string;
+      };
     }
   }
 }
 
+app.use(express.json());
+
 // Временный мидлвар для авторизации
-app.use( ( req: Request, res: Response, next: NextFunction ) => {
+app.use((req: Request, _res: Response, next: NextFunction) => {
   req.user = {
     _id: '65198bdc11e4cfb283c97609' // настоящий идентификатор пользователя
+  };
+
+  next();
+});
+
+app.use(routes);
+
+const start = async () => {
+  try {
+    mongoose.set("strictQuery", false);
+    await mongoose.connect('mongodb://localhost:27017/mestodb');
+    console.log("База данных подключена");
+    app.listen(+PORT, () => {
+      console.log(`Сервер запущен по адресу http://localhost:${PORT}`);
+    });
+  } catch (err) {
+    console.log("Ошибка подключения", err);
   }
+};
 
-  next()
-} )
-
-app.use( '/', router )
-
-app.listen( +PORT, () => {
-  console.log( `Server is running at http://localhost:${PORT}` )
-} )
+start();
