@@ -1,27 +1,27 @@
 import { Request, Response } from 'express';
-import user from '../models/userModel';
+import User from '../models/userModel'; // Changed the import to use an uppercase "U"
 
 // Вернуть всех пользователей
 export const getUsers = async (_req: Request, res: Response) => {
   try {
-    const users = await user.find();
-    res.json(users);
+    const users = await User.find();
+    return res.json(users);
   } catch (error) {
-    res.status(500).json({ error: 'Ошибка обработки запроса к серверу.' });
+    return res.status(500).json({ error: 'Ошибка обработки запроса к серверу.' });
   }
 };
 
 // Вернуть пользователя по _id
 export const getUserById = async (req: Request, res: Response) => {
-  const userId = req.params.userId;
+  const { userId } = req.params;
   try {
-    const userById = await user.findById(userId);
+    const userById = await User.findById(userId);
     if (!userById) {
       return res.status(404).json({ error: 'Пользователь по указанному _id не найден.' });
     }
-    res.json(userById);
+    return res.json(userById);
   } catch (error) {
-    res.status(500).json({ error: 'Ошибка обработки запроса к серверу.' });
+    return res.status(500).json({ error: 'Ошибка обработки запроса к серверу.' });
   }
 };
 
@@ -29,10 +29,10 @@ export const getUserById = async (req: Request, res: Response) => {
 export const createUser = async (req: Request, res: Response) => {
   const { name, about, avatar } = req.body;
   try {
-    const newUser = await user.create({ name, about, avatar });
-    res.status(201).json(newUser);
+    const newUser = await User.create({ name, about, avatar });
+    return res.status(201).json(newUser);
   } catch (error) {
-    res.status(400).json({ error: 'Переданы некорректные данные при создании пользователя. ' });
+    return res.status(400).json({ error: 'Переданы некорректные данные при создании пользователя.' });
   }
 };
 
@@ -40,17 +40,17 @@ export const createUser = async (req: Request, res: Response) => {
 export const updateUserProfile = async (req: Request, res: Response) => {
   const { name, about } = req.body;
   try {
-    const updatedUser = await user.findByIdAndUpdate(
+    const updatedUser = await User.findByIdAndUpdate(
       req.user._id,
       { name, about },
-      { new: true }
+      { new: true },
     );
     if (!updatedUser) {
       return res.status(404).json({ error: 'Пользователь с указанным _id не найден.' });
     }
-    res.json(updatedUser);
+    return res.json(updatedUser);
   } catch (error) {
-    res.status(500).json({ error: 'Ошибка обработки запроса к серверу.' });
+    return res.status(500).json({ error: 'Ошибка обработки запроса к серверу.' });
   }
 };
 
@@ -58,16 +58,16 @@ export const updateUserProfile = async (req: Request, res: Response) => {
 export const updateUserAvatar = async (req: Request, res: Response) => {
   const { avatar } = req.body;
   try {
-    const updatedUser = await user.findByIdAndUpdate(
+    const updatedUser = await User.findByIdAndUpdate(
       req.user._id,
       { avatar },
-      { new: true }
+      { new: true },
     );
     if (!updatedUser) {
       return res.status(404).json({ error: 'Пользователь с указанным _id не найден.' });
     }
-    res.json(updatedUser);
+    return res.json(updatedUser);
   } catch (error) {
-    res.status(500).json({ error: 'Ошибка обработки запроса к серверу.' });
+    return res.status(500).json({ error: 'Ошибка обработки запроса к серверу.' });
   }
 };

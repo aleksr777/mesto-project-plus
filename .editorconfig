@@ -27,6 +27,9 @@ trim_trailing_whitespace = true
 [*.md]
 trim_trailing_whitespace = false
 
+# Добавлять запятую к последнему элементу объекта
+comma-dangle = always
+
 # Указывает, должен ли файл заканчиваться новой строкой
 # Возможные значения - true, false
 insert_final_newline = true

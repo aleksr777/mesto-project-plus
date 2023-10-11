@@ -1,13 +1,13 @@
 import { Request, Response } from 'express';
-import card from '../models/cardModel';
+import Card from '../models/cardModel';
 
 // Вернуть все карточки
 export const getAllCards = async (_req: Request, res: Response) => {
   try {
-    const cards = await card.find();
-    res.json(cards);
+    const cards = await Card.find();
+    return res.json(cards);
   } catch (error) {
-    res.status(500).json({ error: 'Ошибка обработки запроса к серверу.' });
+    return res.status(500).json({ error: 'Ошибка обработки запроса к серверу.' });
   }
 };
 
@@ -15,15 +15,15 @@ export const getAllCards = async (_req: Request, res: Response) => {
 export const createCard = async (req: Request, res: Response) => {
   const { name, link } = req.body;
   try {
-    const newCard = new card({
+    const newCard = new Card({
       name,
       link,
       owner: req.user._id,
     });
     const savedCard = await newCard.save();
-    res.status(201).json(savedCard);
+    return res.status(201).json(savedCard);
   } catch (error) {
-    res.status(400).json({ error: 'Переданы некорректные данные при создании карточки.' });
+    return res.status(400).json({ error: 'Переданы некорректные данные при создании карточки.' });
   }
 };
 
@@ -31,51 +31,46 @@ export const createCard = async (req: Request, res: Response) => {
 export const deleteCard = async (req: Request, res: Response) => {
   const { cardId } = req.params;
   try {
-    const deletedCard = await card.findByIdAndDelete(cardId);
+    const deletedCard = await Card.findByIdAndDelete(cardId);
     if (!deletedCard) {
-      res.status(404).json({ error: 'Карточка с указанным _id не найдена.' });
-    } else {
-      res.json(deletedCard);
+      return res.status(404).json({ error: 'Карточка с указанным _id не найдена.' });
     }
+    return res.json(deletedCard);
   } catch (error) {
-    res.status(500).json({ error: 'Ошибка обработки запроса к серверу.' });
+    return res.status(500).json({ error: 'Ошибка обработки запроса к серверу.' });
   }
 };
 
 // Добавить лайк карточке
 export const likeCard = async (req: Request, res: Response) => {
   try {
-    const updatedCard = await card.findByIdAndUpdate(
+    const updatedCard = await Card.findByIdAndUpdate(
       req.params.cardId,
       { $addToSet: { likes: req.user._id } },
-      { new: true }
+      { new: true },
     );
-
     if (!updatedCard) {
       return res.status(404).json({ error: 'Переданы некорректные данные для постановки лайка.' });
     }
-
-    res.json(updatedCard);
+    return res.json(updatedCard);
   } catch (error) {
-    res.status(500).json({ error: 'Ошибка обработки запроса к серверу.' });
+    return res.status(500).json({ error: 'Ошибка обработки запроса к серверу.' });
   }
 };
 
 // Удалить лайк у карточки
 export const dislikeCard = async (req: Request, res: Response) => {
   try {
-    const updatedCard = await card.findByIdAndUpdate(
+    const updatedCard = await Card.findByIdAndUpdate(
       req.params.cardId,
       { $pull: { likes: req.user._id } },
-      { new: true }
+      { new: true },
     );
-
     if (!updatedCard) {
-      return res.status(404).json({ error: 'Переданы некорректные данные для снятии лайка.' });
+      return res.status(404).json({ error: 'Переданы некорректные данные для снятия лайка.' });
     }
-
-    res.json(updatedCard);
+    return res.json(updatedCard);
   } catch (error) {
-    res.status(500).json({ error: 'Ошибка обработки запроса к серверу.' });
+    return res.status(500).json({ error: 'Ошибка обработки запроса к серверу.' });
   }
 };
