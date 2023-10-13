@@ -25,10 +25,12 @@ const cardSchema = new Schema<ICard>({
   },
   likes: {
     type: [Schema.Types.ObjectId],
+    required: true,
     default: [],
   },
   createdAt: {
     type: Date,
+    required: true,
     default: Date.now,
   },
 });
