@@ -5,7 +5,7 @@ import {
   deleteCard,
   likeCard,
   dislikeCard,
-} from '../controllers/cardsController';
+} from '../controllers/cards-controller';
 
 const cardsRouter = Router();
 

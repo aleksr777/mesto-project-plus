@@ -5,7 +5,7 @@ import {
   createUser,
   updateUserProfile,
   updateUserAvatar,
-} from '../controllers/usersController';
+} from '../controllers/users-controller';
 
 const usersRouter = Router();
 

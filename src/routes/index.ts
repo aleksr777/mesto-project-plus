@@ -1,7 +1,7 @@
 import { Router } from 'express';
-import homeRouter from './homeRouter';
-import cardsRouter from './cardsRouter';
-import usersRouter from './usersRouter';
+import homeRouter from './home-router';
+import cardsRouter from './cards-router';
+import usersRouter from './users-router';
 
 const routes = Router();
 

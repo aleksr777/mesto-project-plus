@@ -1,5 +1,5 @@
 import { Request, Response } from 'express';
-import Card from '../models/cardModel';
+import Card from '../models/card-model';
 
 // Вернуть все карточки
 export const getAllCards = async (_req: Request, res: Response) => {

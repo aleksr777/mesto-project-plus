@@ -1,34 +1,19 @@
 import express, {
-  Request,
   Response,
   NextFunction,
 } from 'express';
-import { connectToDatabase } from './utils/connectToDatabase';
+import connectToDatabase from './utils/connect-to-database';
 import routes from './routes/index';
 
-// Расширение типа 'Request' для добавления свойства 'user'
-declare global {
-  namespace Express {
-    interface Request {
-      user: {
-        _id: string;
-        name?: string;
-        about?: string;
-        avatar?: string;
-      };
-    }
-  }
-}
-
 const { PORT = 3000 } = process.env;
-const app = express();
+const app: express.Express = express();
 
 app.use(express.json());
 
 connectToDatabase();
 
 // Временный мидлвар для авторизации
-app.use((req: Request, _res: Response, next: NextFunction) => {
+app.use((req: any, res: Response, next: NextFunction) => {
   req.user = {
     _id: '65198bdc11e4cfb283c97609',
   };
@@ -37,4 +22,6 @@ app.use((req: Request, _res: Response, next: NextFunction) => {
 
 app.use(routes);
 
-app.listen(+PORT);
+app.listen(+PORT, () => {
+  console.log(`Server is running on port ${PORT}`);
+});
