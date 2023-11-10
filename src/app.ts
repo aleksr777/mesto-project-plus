@@ -3,7 +3,7 @@ import express, {
   Response,
   NextFunction,
 } from 'express';
-import mongoose from 'mongoose';
+import { connectToDatabase } from './utils/connectToDatabase';
 import routes from './routes/index';
 
 // Расширение типа 'Request' для добавления свойства 'user'
@@ -25,7 +25,7 @@ const app = express();
 
 app.use(express.json());
 
-mongoose.connect('mongodb://localhost:27017/mestodb');
+connectToDatabase();
 
 // Временный мидлвар для авторизации
 app.use((req: Request, _res: Response, next: NextFunction) => {
