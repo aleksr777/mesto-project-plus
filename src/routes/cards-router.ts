@@ -9,10 +9,10 @@ import {
 
 const cardsRouter = Router();
 
-cardsRouter.get('/cards', getAllCards); // Получение всех карточек
-cardsRouter.post('/cards', createCard); // Создание карточки
-cardsRouter.delete('/cards/:cardId', deleteCard); // Удаление карточки по идентификатору
-cardsRouter.put('/cards/:cardId/likes', likeCard); // Добавить лайк карточке
-cardsRouter.delete('/cards/:cardId/likes', dislikeCard); // Удалить лайк
+cardsRouter.get('/', getAllCards); // Получение всех карточек
+cardsRouter.post('/', createCard); // Создание карточки
+cardsRouter.delete('/:cardId', deleteCard); // Удаление карточки по идентификатору
+cardsRouter.put('/:cardId/likes', likeCard); // Добавить лайк карточке
+cardsRouter.delete('/:cardId/likes', dislikeCard); // Удалить лайк
 
 export default cardsRouter;

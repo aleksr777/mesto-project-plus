@@ -1,5 +1,5 @@
 import { Request, Response } from 'express';
-import User from '../models/user-model'; // Changed the import to use an uppercase "U"
+import User from '../models/user-model';
 
 // Вернуть всех пользователей
 export const getUsers = async (_req: Request, res: Response) => {

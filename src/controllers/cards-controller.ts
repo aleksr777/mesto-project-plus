@@ -27,7 +27,7 @@ export const createCard = async (req: Request, res: Response) => {
   }
 };
 
-// Вернуть карточку по _id
+// Удалить карточку по идентификатору
 export const deleteCard = async (req: Request, res: Response) => {
   const { cardId } = req.params;
   try {
