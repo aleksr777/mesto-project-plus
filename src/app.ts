@@ -5,7 +5,7 @@ import express, {
 import connectToDatabase from './utils/connect-to-database';
 import routes from './routes/index';
 
-// Для временного обхода ошибок типизации (но линтер при этом выдаёт ошибку)
+// TODO: после доработки авторизации у нужно удалить этот код типизации
 /* eslint-disable no-unused-vars */
 declare global {
   namespace Express {
@@ -25,7 +25,7 @@ app.use(express.json());
 
 connectToDatabase();
 
-// Временный мидлвар для авторизации
+// TODO: после доработки авторизации нужно удалить этот временный мидлвар
 app.use((req, res: Response, next: NextFunction) => {
   req.user = {
     _id: '65198bdc11e4cfb283c97609',
