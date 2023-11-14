@@ -9,10 +9,10 @@ import {
 
 const usersRouter = Router();
 
-usersRouter.get('/', getUsers); // Получить всех пользователей
-usersRouter.get('/:userId', getUserById); // Получить пользователя по _id
-usersRouter.post('/', createUser); // Создать пользователя
-usersRouter.patch('/me', updateUserProfile); // Обновить профайл
-usersRouter.patch('/me/avatar', updateUserAvatar); // Обновить аватар
+usersRouter.get('/', getUsers);
+usersRouter.get('/:userId', getUserById);
+usersRouter.post('/', createUser);
+usersRouter.patch('/me', updateUserProfile);
+usersRouter.patch('/me/avatar', updateUserAvatar);
 
 export default usersRouter;

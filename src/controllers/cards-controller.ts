@@ -1,7 +1,6 @@
 import { Request, Response } from 'express';
 import Card from '../models/card-model';
 
-// Вернуть все карточки
 export const getAllCards = async (_req: Request, res: Response) => {
   try {
     const cards = await Card.find();
@@ -11,7 +10,6 @@ export const getAllCards = async (_req: Request, res: Response) => {
   }
 };
 
-// Создать новую карточку
 export const createCard = async (req: Request, res: Response) => {
   const { name, link } = req.body;
   try {
@@ -27,7 +25,6 @@ export const createCard = async (req: Request, res: Response) => {
   }
 };
 
-// Удалить карточку по идентификатору
 export const deleteCard = async (req: Request, res: Response) => {
   const { cardId } = req.params;
   try {
@@ -41,7 +38,6 @@ export const deleteCard = async (req: Request, res: Response) => {
   }
 };
 
-// Добавить лайк карточке
 export const likeCard = async (req: Request, res: Response) => {
   try {
     const updatedCard = await Card.findByIdAndUpdate(
@@ -58,7 +54,6 @@ export const likeCard = async (req: Request, res: Response) => {
   }
 };
 
-// Удалить лайк у карточки
 export const dislikeCard = async (req: Request, res: Response) => {
   try {
     const updatedCard = await Card.findByIdAndUpdate(

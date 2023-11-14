@@ -1,7 +1,6 @@
 import { Request, Response } from 'express';
 import User from '../models/user-model';
 
-// Вернуть всех пользователей
 export const getUsers = async (_req: Request, res: Response) => {
   try {
     const users = await User.find();
@@ -11,7 +10,6 @@ export const getUsers = async (_req: Request, res: Response) => {
   }
 };
 
-// Вернуть пользователя по _id
 export const getUserById = async (req: Request, res: Response) => {
   const { userId } = req.params;
   try {
@@ -25,7 +23,6 @@ export const getUserById = async (req: Request, res: Response) => {
   }
 };
 
-// Создать пользователя
 export const createUser = async (req: Request, res: Response) => {
   const { name, about, avatar } = req.body;
   try {
@@ -36,7 +33,6 @@ export const createUser = async (req: Request, res: Response) => {
   }
 };
 
-// Обновить профайл
 export const updateUserProfile = async (req: Request, res: Response) => {
   const { name, about } = req.body;
   try {
@@ -54,7 +50,6 @@ export const updateUserProfile = async (req: Request, res: Response) => {
   }
 };
 
-// Обновить аватар
 export const updateUserAvatar = async (req: Request, res: Response) => {
   const { avatar } = req.body;
   try {
