@@ -2,14 +2,16 @@ import { Request, Response } from 'express';
 import { Error } from 'mongoose';
 import User from '../models/user-model';
 import logError from '../utils/log-error';
+import errorMessages from '../constants/error-messages';
 
 export const getUsers = async (_req: Request, res: Response) => {
   try {
     const users = await User.find();
-    return res.json(users);
+    return res.status(200).json(users);
   } catch (error) {
     logError(error);
-    return res.status(500).json({ error: 'Ошибка на сервере при обработке запроса.' });
+    return res.status(errorMessages.default.code)
+      .json({ error: errorMessages.default.text });
   }
 };
 
@@ -18,15 +20,18 @@ export const getUserById = async (req: Request, res: Response) => {
   try {
     const userById = await User.findById(userId);
     if (!userById) {
-      return res.status(404).json({ error: 'Пользователь по указанному _id не найден.' });
+      return res.status(errorMessages.notFoundId.code)
+        .json({ error: errorMessages.notFoundId.text });
     }
-    return res.json(userById);
+    return res.status(200).json(userById);
   } catch (error) {
     logError(error);
     if (error instanceof Error.CastError) {
-      return res.status(400).json({ error: 'Некорректный формат _id пользователя.' });
+      return res.status(errorMessages.invalidId.code)
+        .json({ error: errorMessages.invalidId.text });
     }
-    return res.status(500).json({ error: 'Ошибка на сервере при обработке запроса.' });
+    return res.status(errorMessages.default.code)
+      .json({ error: errorMessages.default.text });
   }
 };
 
@@ -36,15 +41,18 @@ export const createUser = async (req: Request, res: Response) => {
     const newUser = await User.create({ name, about, avatar });
     const validationError = newUser.validateSync();
     if (validationError) {
-      return res.status(400).json({ error: 'Переданы некорректные данные для создании пользователя.' });
+      return res.status(errorMessages.invalidData.code)
+        .json({ error: errorMessages.invalidData.text });
     }
     return res.status(201).json(newUser);
   } catch (error) {
     logError(error);
     if (error instanceof Error.ValidationError) {
-      return res.status(400).json({ error: 'Переданы некорректные данные для создании пользователя.' });
+      return res.status(errorMessages.invalidData.code)
+        .json({ error: errorMessages.invalidData.text });
     }
-    return res.status(500).json({ error: 'Ошибка на сервере при обработке запроса.' });
+    return res.status(errorMessages.default.code)
+      .json({ error: errorMessages.default.text });
   }
 };
 
@@ -57,19 +65,23 @@ export const updateUserProfile = async (req: Request, res: Response) => {
       { new: true, runValidators: true },
     );
     if (!updatedUser) {
-      return res.status(404).json({ error: 'Пользователь с указанным _id не найден.' });
+      return res.status(errorMessages.notFoundId.code)
+        .json({ error: errorMessages.notFoundId.text });
     }
     const validationError = updatedUser.validateSync();
     if (validationError) {
-      return res.status(400).json({ error: 'Переданы некорректные данные при обновлении профиля.' });
+      return res.status(errorMessages.invalidData.code)
+        .json({ error: errorMessages.invalidData.text });
     }
-    return res.json(updatedUser);
+    return res.status(200).json(updatedUser);
   } catch (error) {
     if (error instanceof Error.ValidationError) {
-      return res.status(400).json({ error: 'Переданы некорректные данные при обновлении профиля.' });
+      return res.status(errorMessages.invalidData.code)
+        .json({ error: errorMessages.invalidData.text });
     }
     logError(error);
-    return res.status(500).json({ error: 'Ошибка на сервере при обработке запроса.' });
+    return res.status(errorMessages.default.code)
+      .json({ error: errorMessages.default.text });
   }
 };
 
@@ -82,18 +94,22 @@ export const updateUserAvatar = async (req: Request, res: Response) => {
       { new: true, runValidators: true },
     );
     if (!updatedUser) {
-      return res.status(404).json({ error: 'Пользователь с указанным _id не найден.' });
+      return res.status(errorMessages.notFoundId.code)
+        .json({ error: errorMessages.notFoundId.text });
     }
     const validationError = updatedUser.validateSync();
     if (validationError) {
-      return res.status(400).json({ error: 'Переданы некорректные данные при обновлении аватара.' });
+      return res.status(errorMessages.invalidData.code)
+        .json({ error: errorMessages.invalidData.text });
     }
-    return res.json(updatedUser);
+    return res.status(200).json(updatedUser);
   } catch (error) {
     logError(error);
     if (error instanceof Error.ValidationError) {
-      return res.status(400).json({ error: 'Переданы некорректные данные при обновлении аватара.' });
+      return res.status(errorMessages.invalidData.code)
+        .json({ error: errorMessages.invalidData.text });
     }
-    return res.status(500).json({ error: 'Ошибка на сервере при обработке запроса.' });
+    return res.status(errorMessages.default.code)
+      .json({ error: errorMessages.default.text });
   }
 };
