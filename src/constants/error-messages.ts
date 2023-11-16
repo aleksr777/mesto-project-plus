@@ -16,7 +16,7 @@ const errorMessages: Record<string, ErrorMessage> = {
     code: 400,
     text: 'Переданы некорректные данные',
   },
-  notFoundId: {
+  notFoundById: {
     code: 404,
     text: 'По указанному _id ничего не найдено',
   },

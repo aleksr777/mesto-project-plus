@@ -18,17 +18,17 @@ export const getUsers = async (_req: Request, res: Response) => {
 export const getUserById = async (req: Request, res: Response) => {
   const { userId } = req.params;
   try {
-    const userById = await User.findById(userId);
-    if (!userById) {
-      return res.status(errorMessages.notFoundId.code)
-        .json({ error: errorMessages.notFoundId.text });
-    }
+    const userById = await User.findById(userId).orFail();
     return res.status(200).json(userById);
   } catch (error) {
     logError(error);
     if (error instanceof Error.CastError) {
       return res.status(errorMessages.invalidId.code)
         .json({ error: errorMessages.invalidId.text });
+    }
+    if (error instanceof Error.DocumentNotFoundError) {
+      return res.status(errorMessages.notFoundById.code)
+        .json({ error: errorMessages.notFoundById.text });
     }
     return res.status(errorMessages.default.code)
       .json({ error: errorMessages.default.text });
@@ -63,11 +63,7 @@ export const updateUserProfile = async (req: Request, res: Response) => {
       req.user._id,
       { name, about },
       { new: true, runValidators: true },
-    );
-    if (!updatedUser) {
-      return res.status(errorMessages.notFoundId.code)
-        .json({ error: errorMessages.notFoundId.text });
-    }
+    ).orFail();
     const validationError = updatedUser.validateSync();
     if (validationError) {
       return res.status(errorMessages.invalidData.code)
@@ -78,6 +74,10 @@ export const updateUserProfile = async (req: Request, res: Response) => {
     if (error instanceof Error.ValidationError) {
       return res.status(errorMessages.invalidData.code)
         .json({ error: errorMessages.invalidData.text });
+    }
+    if (error instanceof Error.DocumentNotFoundError) {
+      return res.status(errorMessages.notFoundById.code)
+        .json({ error: errorMessages.notFoundById.text });
     }
     logError(error);
     return res.status(errorMessages.default.code)
@@ -92,11 +92,7 @@ export const updateUserAvatar = async (req: Request, res: Response) => {
       req.user._id,
       { avatar },
       { new: true, runValidators: true },
-    );
-    if (!updatedUser) {
-      return res.status(errorMessages.notFoundId.code)
-        .json({ error: errorMessages.notFoundId.text });
-    }
+    ).orFail();
     const validationError = updatedUser.validateSync();
     if (validationError) {
       return res.status(errorMessages.invalidData.code)
@@ -108,6 +104,10 @@ export const updateUserAvatar = async (req: Request, res: Response) => {
     if (error instanceof Error.ValidationError) {
       return res.status(errorMessages.invalidData.code)
         .json({ error: errorMessages.invalidData.text });
+    }
+    if (error instanceof Error.DocumentNotFoundError) {
+      return res.status(errorMessages.notFoundById.code)
+        .json({ error: errorMessages.notFoundById.text });
     }
     return res.status(errorMessages.default.code)
       .json({ error: errorMessages.default.text });
