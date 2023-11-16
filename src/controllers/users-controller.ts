@@ -10,7 +10,6 @@ import {
   handleNotFoundError,
 } from '../utils/handle-errors';
 
-
 export const getUsers = async (_req: Request, res: Response) => {
   try {
     const users = await User.find();

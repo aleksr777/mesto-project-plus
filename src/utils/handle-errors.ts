@@ -25,21 +25,17 @@ const errorMessages: Record<string, ErrorMessage> = {
 };
 
 export const handleDefaultError = (res: Response) => {
-  return res.status(errorMessages.default.code)
-    .json({ error: errorMessages.default.text });
+  res.status(errorMessages.default.code).json({ error: errorMessages.default.text });
 };
 
 export const handleValidationError = (res: Response) => {
-  return res.status(errorMessages.invalidData.code)
-    .json({ error: errorMessages.invalidData.text });
+  res.status(errorMessages.invalidData.code).json({ error: errorMessages.invalidData.text });
 };
 
 export const handleCastError = (res: Response) => {
-  return res.status(errorMessages.invalidId.code)
-    .json({ error: errorMessages.invalidId.text });
+  res.status(errorMessages.invalidId.code).json({ error: errorMessages.invalidId.text });
 };
 
 export const handleNotFoundError = (res: Response) => {
-  return res.status(errorMessages.notFoundById.code)
-    .json({ error: errorMessages.notFoundById.text });
+  res.status(errorMessages.notFoundById.code).json({ error: errorMessages.notFoundById.text });
 };
