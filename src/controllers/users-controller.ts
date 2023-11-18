@@ -7,7 +7,7 @@ import {
   handleDefaultError,
   handleValidationError,
   handleCastError,
-  handleNotFoundError,
+  handleNotFoundIdError,
 } from '../utils/handle-errors';
 
 export const getUsers = async (_req: Request, res: Response) => {
@@ -28,7 +28,7 @@ export const getUserById = async (req: Request, res: Response) => {
   } catch (error) {
     logError(error);
     if (error instanceof Error.CastError) return handleCastError(res);
-    if (error instanceof Error.DocumentNotFoundError) return handleNotFoundError(res);
+    if (error instanceof Error.DocumentNotFoundError) return handleNotFoundIdError(res);
     return handleDefaultError(res);
   }
 };

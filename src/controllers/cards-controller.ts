@@ -6,7 +6,7 @@ import {
   handleDefaultError,
   handleValidationError,
   handleCastError,
-  handleNotFoundError,
+  handleNotFoundIdError,
 } from '../utils/handle-errors';
 
 export const getAllCards = async (_req: Request, res: Response) => {
@@ -47,7 +47,7 @@ export const deleteCard = async (req: Request, res: Response) => {
   } catch (error) {
     logError(error);
     if (error instanceof Error.CastError) return handleCastError(res);
-    if (error instanceof Error.DocumentNotFoundError) return handleNotFoundError(res);
+    if (error instanceof Error.DocumentNotFoundError) return handleNotFoundIdError(res);
     return handleDefaultError(res);
   }
 };
@@ -63,7 +63,7 @@ export const likeCard = async (req: Request, res: Response) => {
   } catch (error) {
     logError(error);
     if (error instanceof Error.CastError) return handleCastError(res);
-    if (error instanceof Error.DocumentNotFoundError) return handleNotFoundError(res);
+    if (error instanceof Error.DocumentNotFoundError) return handleNotFoundIdError(res);
     return handleDefaultError(res);
   }
 };
@@ -79,7 +79,7 @@ export const dislikeCard = async (req: Request, res: Response) => {
   } catch (error) {
     logError(error);
     if (error instanceof Error.CastError) return handleCastError(res);
-    if (error instanceof Error.DocumentNotFoundError) return handleNotFoundError(res);
+    if (error instanceof Error.DocumentNotFoundError) return handleNotFoundIdError(res);
     return handleDefaultError(res);
   }
 };

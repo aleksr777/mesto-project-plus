@@ -5,7 +5,7 @@ import logError from './log-error';
 import {
   handleDefaultError,
   handleValidationError,
-  handleNotFoundError,
+  handleNotFoundIdError,
 } from './handle-errors';
 
 const updateUserData = async (
@@ -22,7 +22,7 @@ const updateUserData = async (
     return res.status(200).json(updatedUser);
   } catch (error) {
     if (error instanceof Error.ValidationError) return handleValidationError(res);
-    if (error instanceof Error.DocumentNotFoundError) return handleNotFoundError(res);
+    if (error instanceof Error.DocumentNotFoundError) return handleNotFoundIdError(res);
     logError(error);
     return handleDefaultError(res);
   }
