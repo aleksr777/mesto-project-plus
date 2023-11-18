@@ -19,8 +19,6 @@ const updateUserData = async (
       updateData,
       { new: true, runValidators: true },
     ).orFail();
-    const validationError = updatedUser.validateSync();
-    if (validationError) return handleValidationError(res);
     return res.status(200).json(updatedUser);
   } catch (error) {
     if (error instanceof Error.ValidationError) return handleValidationError(res);
