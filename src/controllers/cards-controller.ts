@@ -27,8 +27,6 @@ export const createCard = async (req: Request, res: Response) => {
       link,
       owner: req.user._id,
     });
-    const validationError = newCard.validateSync();
-    if (validationError) return handleValidationError(res);
     const savedCard = await newCard.save();
     return res.status(201).json(savedCard);
   } catch (error) {

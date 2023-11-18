@@ -37,8 +37,6 @@ export const createUser = async (req: Request, res: Response) => {
   const { name, about, avatar } = req.body;
   try {
     const newUser = await User.create({ name, about, avatar });
-    const validationError = newUser.validateSync();
-    if (validationError) return handleValidationError(res);
     return res.status(201).json(newUser);
   } catch (error) {
     logError(error);
