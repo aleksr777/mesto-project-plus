@@ -2,6 +2,7 @@ import { Response } from 'express';
 import { Error } from 'mongoose';
 import User, { IUser } from '../models/user-model';
 import logError from './log-error';
+import { SUCC_CODE_DEFAULT } from '../constants/http-codes';
 import {
   handleDefaultError,
   handleValidationError,
@@ -19,7 +20,7 @@ const updateUserData = async (
       updateData,
       { new: true, runValidators: true },
     ).orFail();
-    return res.status(200).json(updatedUser);
+    return res.status(SUCC_CODE_DEFAULT).json(updatedUser);
   } catch (error) {
     if (error instanceof Error.ValidationError) return handleValidationError(res);
     if (error instanceof Error.DocumentNotFoundError) return handleNotFoundIdError(res);

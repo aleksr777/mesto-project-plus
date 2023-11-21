@@ -4,6 +4,10 @@ import Card from '../models/card-model';
 import logError from '../utils/log-error';
 import updateCardData from '../utils/update-card-data';
 import {
+  SUCC_CODE_DEFAULT,
+  SUCC_CODE_CREATED,
+} from '../constants/http-codes';
+import {
   handleDefaultError,
   handleValidationError,
   handleCastError,
@@ -13,7 +17,7 @@ import {
 export const getAllCards = async (_req: Request, res: Response) => {
   try {
     const allCards = await Card.find();
-    return res.status(200).json(allCards);
+    return res.status(SUCC_CODE_DEFAULT).json(allCards);
   } catch (error) {
     logError(error);
     return handleDefaultError(res);
@@ -29,7 +33,7 @@ export const createCard = async (req: Request, res: Response) => {
       owner: req.user._id,
     });
     const savedCard = await newCard.save();
-    return res.status(201).json(savedCard);
+    return res.status(SUCC_CODE_CREATED).json(savedCard);
   } catch (error) {
     logError(error);
     if (error instanceof Error.ValidationError) return handleValidationError(res);
@@ -42,7 +46,7 @@ export const deleteCard = async (req: Request, res: Response) => {
   try {
     const foundCard = await Card.findById(cardId).orFail();
     await foundCard.deleteOne();
-    return res.status(200).json({ message: 'Карточка удалена' });
+    return res.status(SUCC_CODE_DEFAULT).json({ message: 'Карточка удалена' });
   } catch (error) {
     logError(error);
     if (error instanceof Error.CastError) return handleCastError(res);

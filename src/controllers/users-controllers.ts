@@ -4,6 +4,10 @@ import User from '../models/user-model';
 import logError from '../utils/log-error';
 import updateUserData from '../utils/update-user-data';
 import {
+  SUCC_CODE_DEFAULT,
+  SUCC_CODE_CREATED,
+} from '../constants/http-codes';
+import {
   handleDefaultError,
   handleValidationError,
   handleCastError,
@@ -13,7 +17,7 @@ import {
 export const getUsers = async (_req: Request, res: Response) => {
   try {
     const users = await User.find();
-    return res.status(200).json(users);
+    return res.status(SUCC_CODE_DEFAULT).json(users);
   } catch (error) {
     logError(error);
     return handleDefaultError(res);
@@ -24,7 +28,7 @@ export const getUserById = async (req: Request, res: Response) => {
   const { userId } = req.params;
   try {
     const userById = await User.findById(userId).orFail();
-    return res.status(200).json(userById);
+    return res.status(SUCC_CODE_DEFAULT).json(userById);
   } catch (error) {
     logError(error);
     if (error instanceof Error.CastError) return handleCastError(res);
@@ -37,7 +41,7 @@ export const createUser = async (req: Request, res: Response) => {
   const { name, about, avatar } = req.body;
   try {
     const newUser = await User.create({ name, about, avatar });
-    return res.status(201).json(newUser);
+    return res.status(SUCC_CODE_CREATED).json(newUser);
   } catch (error) {
     logError(error);
     if (error instanceof Error.ValidationError) return handleValidationError(res);

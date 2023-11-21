@@ -1,54 +1,58 @@
 {
-    "env": {
-        "es2021": true, // Использовать стандарт ECMAScript 2021
-        "node": true // Работа в среде Node.js
-    },
-    "extends": [
-        "airbnb-base" // Расширение настроек AirBnB Base
-    ],
-    "parser": "@typescript-eslint/parser", // Парсер TypeScript ESLint
-    "parserOptions": {
-        "ecmaVersion": "latest", // Версия ECMAScript - последняя доступная
-        "sourceType": "module" // Тип модуля - ES модуль
-    },
-    "plugins": [
-        "@typescript-eslint" // Использовать плагин TypeScript ESLint
-    ],
-    "settings": {
-        "import/resolver": {
-            "node": {
-                "extensions": [
-                    ".ts",
-                    ".js",
-                    ".json" // Расширения файлов для Node.js разрешения
-                ]
-            }
-        },
-        "import/extensions": [
-            ".js",
-            ".ts" // Расширения импортируемых файлов
+  "env": {
+    "es2021": true, // Использовать стандарт ECMAScript 2021
+    "node": true // Работа в среде Node.js
+  },
+  "extends": [
+    "airbnb-base" // Расширение настроек AirBnB Base
+  ],
+  "parser": "@typescript-eslint/parser", // Парсер TypeScript ESLint
+  "parserOptions": {
+    "ecmaVersion": "latest", // Версия ECMAScript - последняя доступная
+    "sourceType": "module" // Тип модуля - ES модуль
+  },
+  "plugins": [
+    "@typescript-eslint" // Использовать плагин TypeScript ESLint
+  ],
+  "settings": {
+    "import/resolver": {
+      "node": {
+        "extensions": [
+          ".ts",
+          ".js",
+          ".json" // Расширения файлов для Node.js разрешения
         ]
+      }
     },
-    "rules": {
-        "indent": [
-            "error",
-            2
-        ],
-        "import/extensions": [
-            "error",
-            "ignorePackages",
-            {
-                "js": "never",
-                "ts": "never"
-            }
-        ], // Правила импорта для расширений файлов
-        "no-underscore-dangle": [
-            "error",
-            {
-                "allow": [
-                    "_id"
-                ]
-            }
-        ] // Запрет на использование подчеркивания в идентификаторах, но разрешение для "_id"
-    }
+    "import/extensions": [
+      ".js",
+      ".ts" // Расширения импортируемых файлов
+    ]
+  },
+  "rules": {
+    "indent": [
+      "error",
+      2
+    ],
+    "import/extensions": [
+      "error",
+      "ignorePackages",
+      {
+        "js": "never",
+        "ts": "never"
+      }
+    ], // Правила импорта для расширений файлов
+    "no-underscore-dangle": [
+      "error",
+      {
+        "allow": [
+          "_id"
+        ]
+      }
+    ], // Запрет на использование подчеркивания в идентификаторах, но разрешение для "_id"
+    "quotes": [
+      "error",
+      "single"
+    ]
+  }
 }

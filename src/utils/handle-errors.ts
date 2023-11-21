@@ -1,54 +1,38 @@
 import { Response } from 'express';
-
-interface ErrorMessage {
-  code: number;
-  text: string;
-}
-
-const errorMessages: Record<string, ErrorMessage> = {
-  default: {
-    code: 500,
-    text: 'Ошибка на сервере при обработке запроса',
-  },
-  invalidId: {
-    code: 400,
-    text: 'Некорректный формат _id',
-  },
-  invalidData: {
-    code: 400,
-    text: 'Переданы некорректные данные',
-  },
-  notFoundById: {
-    code: 404,
-    text: 'По указанному _id ничего не найдено',
-  },
-  notFoundPage: {
-    code: 404,
-    text: 'Error 404! Страница не найдена!',
-  },
-};
+import {
+  ERR_CODE_DEFAULT,
+  ERR_CODE_BAD_REQUEST,
+  ERR_CODE_NOT_FOUND,
+} from '../constants/http-codes';
+import {
+  ERR_TEXT_DEFAULT,
+  ERR_TEXT_INVALID_ID,
+  ERR_TEXT_INVALID_DATA,
+  ERR_TEXT_NOT_FOUND_BY_ID,
+  ERR_TEXT_NOT_FOUND_PAGE,
+} from '../constants/error-text';
 
 export function handleDefaultError(res: Response) {
-  return res.status(errorMessages.default.code)
-    .json({ error: errorMessages.default.text });
+  return res.status(ERR_CODE_DEFAULT)
+    .json({ error: ERR_TEXT_DEFAULT });
 }
 
 export function handleValidationError(res: Response) {
-  return res.status(errorMessages.invalidData.code)
-    .json({ error: errorMessages.invalidData.text });
+  return res.status(ERR_CODE_BAD_REQUEST)
+    .json({ error: ERR_TEXT_INVALID_DATA });
 }
 
 export function handleCastError(res: Response) {
-  return res.status(errorMessages.invalidId.code)
-    .json({ error: errorMessages.invalidId.text });
+  return res.status(ERR_CODE_BAD_REQUEST)
+    .json({ error: ERR_TEXT_INVALID_ID });
 }
 
 export function handleNotFoundIdError(res: Response) {
-  return res.status(errorMessages.notFoundById.code)
-    .json({ error: errorMessages.notFoundById.text });
+  return res.status(ERR_CODE_NOT_FOUND)
+    .json({ error: ERR_TEXT_NOT_FOUND_BY_ID });
 }
 
 export function handleNotFoundPageError(res: Response) {
-  return res.status(errorMessages.notFoundPage.code)
-    .json({ error: errorMessages.notFoundPage.text });
+  return res.status(ERR_CODE_NOT_FOUND)
+    .json({ error: ERR_TEXT_NOT_FOUND_PAGE });
 }
