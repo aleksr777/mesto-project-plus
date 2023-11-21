@@ -30,6 +30,13 @@
     ]
   },
   "rules": {
+    "quotes": [
+      "error",
+      "single",
+      {
+        "avoidEscape": true
+      }
+    ],
     "indent": [
       "error",
       2
@@ -50,5 +57,22 @@
         ]
       }
     ] // Запрет на использование подчеркивания в идентификаторах, но разрешение для "_id"
-  }
+  },
+  "overrides": [
+    {
+      "files": [
+        "*.ts",
+        "*.js"
+      ],
+      "rules": {
+        "quotes": [
+          "error",
+          "single",
+          {
+            "avoidEscape": true
+          }
+        ]
+      }
+    }
+  ]
 }
