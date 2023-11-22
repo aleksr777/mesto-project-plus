@@ -1,5 +1,6 @@
 import { model, Schema } from 'mongoose';
 import isEmail from 'validator/lib/isEmail';
+import { ERR_TEXT_INVALID_EMAIL_FORMAT } from '../constants/error-text';
 
 export interface IUser {
   name: string;
@@ -30,7 +31,7 @@ const userSchema = new Schema<IUser>({
     type: String,
     required: true,
     unique: true,
-    validate: [isEmail, 'Invalid email format'],
+    validate: [isEmail, ERR_TEXT_INVALID_EMAIL_FORMAT],
   },
   password: {
     type: String,
