@@ -1,5 +1,6 @@
 import { Request, Response } from 'express';
 import { Error } from 'mongoose';
+import bcrypt from 'bcrypt';
 import User from '../models/user-model';
 import logError from '../utils/log-error';
 import updateUserData from '../utils/update-user-data';
@@ -38,9 +39,18 @@ export const getUserById = async (req: Request, res: Response) => {
 };
 
 export const createUser = async (req: Request, res: Response) => {
-  const { name, about, avatar } = req.body;
+  const {
+    name, about, avatar, email, password,
+  } = req.body;
   try {
-    const newUser = await User.create({ name, about, avatar });
+    const hashedPassword = await bcrypt.hash(password, 10);
+    const newUser = await User.create({
+      name,
+      about,
+      avatar,
+      email,
+      password: hashedPassword,
+    });
     return res.status(SUCC_CODE_CREATED).json(newUser);
   } catch (error) {
     logError(error);
