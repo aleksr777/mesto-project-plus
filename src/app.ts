@@ -5,6 +5,7 @@ import express, {
 } from 'express';
 import connectToDatabase from './utils/connect-to-database';
 import routes from './routes/index';
+import { login, createUser } from './controllers/users-controllers';
 
 // TODO: после доработки авторизации у нужно удалить этот код типизации
 /* eslint-disable no-unused-vars */
@@ -35,6 +36,8 @@ app.use((req, res: Response, next: NextFunction) => {
 });
 
 app.use(routes);
+app.post('/signin', login);
+app.post('/signup', createUser);
 
 app.listen(+PORT, () => {
   console.log(`Server is running on port ${PORT}`);
