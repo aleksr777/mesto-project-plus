@@ -1,4 +1,5 @@
 import { Router } from 'express';
+import { authenticateToken } from '../middlewares/auth';
 import {
   getAllCards,
   createCard,
@@ -9,10 +10,10 @@ import {
 
 const cardsRouter = Router();
 
-cardsRouter.get('/', getAllCards);
-cardsRouter.post('/', createCard);
-cardsRouter.delete('/:cardId', deleteCard);
-cardsRouter.put('/:cardId/likes', likeCard);
-cardsRouter.delete('/:cardId/likes', dislikeCard);
+cardsRouter.get('/', authenticateToken, getAllCards);
+cardsRouter.post('/', authenticateToken, createCard);
+cardsRouter.delete('/:cardId', authenticateToken, deleteCard);
+cardsRouter.put('/:cardId/likes', authenticateToken, likeCard);
+cardsRouter.delete('/:cardId/likes', authenticateToken, dislikeCard);
 
 export default cardsRouter;

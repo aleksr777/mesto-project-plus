@@ -1,4 +1,5 @@
 import { Router } from 'express';
+import { authenticateToken } from '../middlewares/auth';
 import {
   getUsers,
   getUserById,
@@ -9,10 +10,10 @@ import {
 
 const usersRouter = Router();
 
-usersRouter.get('/', getUsers);
-usersRouter.get('/:userId', getUserById);
-usersRouter.get('/me', getCurrentUser);
-usersRouter.patch('/me', updateUserProfile);
-usersRouter.patch('/me/avatar', updateUserAvatar);
+usersRouter.get('/', authenticateToken, getUsers);
+usersRouter.get('/:userId', authenticateToken, getUserById);
+usersRouter.get('/me', authenticateToken, getCurrentUser);
+usersRouter.patch('/me', authenticateToken, updateUserProfile);
+usersRouter.patch('/me/avatar', authenticateToken, updateUserAvatar);
 
 export default usersRouter;

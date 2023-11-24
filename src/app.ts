@@ -1,8 +1,5 @@
 import 'dotenv/config';
-import express, {
-  Response,
-  NextFunction,
-} from 'express';
+import express from 'express';
 import connectToDatabase from './utils/connect-to-database';
 import routes from './routes/index';
 import { login, createUser } from './controllers/users-controllers';
@@ -26,14 +23,6 @@ const app: express.Express = express();
 app.use(express.json());
 
 connectToDatabase();
-
-// TODO: после доработки авторизации нужно удалить этот временный мидлвар
-app.use((req, res: Response, next: NextFunction) => {
-  req.user = {
-    _id: '65198bdc11e4cfb283c97609',
-  };
-  next();
-});
 
 app.use(routes);
 app.post('/signin', login);
