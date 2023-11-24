@@ -32,6 +32,20 @@ export const getUsers = async (_req: Request, res: Response) => {
   }
 };
 
+export const getCurrentUser = async (req: Request, res: Response) => {
+  console.log(req);
+  const userId = req.user._id;
+  try {
+    const currentUser = await User.findById(userId).orFail();
+    return res.status(SUCC_CODE_DEFAULT).json({ currentUser });
+  } catch (error) {
+    logError(error);
+    if (error instanceof Error.CastError) return handleCastError(res);
+    if (error instanceof Error.DocumentNotFoundError) return handleNotFoundIdError(res);
+    return handleDefaultError(res);
+  }
+};
+
 export const getUserById = async (req: Request, res: Response) => {
   const { userId } = req.params;
   try {
