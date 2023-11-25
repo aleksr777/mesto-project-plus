@@ -75,16 +75,12 @@ export const updateUserAvatar = async (req: Request, res: Response) => {
 export const login = async (req: Request, res: Response) => {
   try {
     const { email, password } = req.body;
-    const user = await User.findOne({ email });
-    if (!user) {
-      return res.status(ERR_CODE_UNAUTH_ERROR).json({ message: ERR_TEXT_UNAUTH_ERROR });
-    }
-    const isMatch = await bcrypt.compare(password, user.password);
-    if (!isMatch) {
+    const user = await User.findOne({ email }).select('+password');
+    if (!user || !(await bcrypt.compare(password, user.password))) {
       return res.status(ERR_CODE_UNAUTH_ERROR).json({ message: ERR_TEXT_UNAUTH_ERROR });
     }
     const token = createToken(user._id.toString());
-    res.cookie('token', token, { httpOnly: true });
+    res.cookie('token', token, { httpOnly: true, sameSite: 'strict' });
     return res.status(SUCC_CODE_DEFAULT).send();
   } catch (error) {
     logError(error);
