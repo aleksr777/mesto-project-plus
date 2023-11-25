@@ -8,6 +8,9 @@ import {
   SUCC_CODE_CREATED,
 } from '../constants/http-codes';
 import {
+  ERR_TEXT_INSUFFICIENT_RIGHTS,
+} from '../constants/error-text';
+import {
   handleDefaultError,
   handleValidationError,
   handleCastError,
@@ -26,11 +29,12 @@ export const getAllCards = async (_req: Request, res: Response) => {
 
 export const createCard = async (req: Request, res: Response) => {
   const { name, link } = req.body;
+  const userId = req.user._id;
   try {
     const newCard = new Card({
       name,
       link,
-      owner: req.user._id,
+      owner: userId,
     });
     const savedCard = await newCard.save();
     return res.status(SUCC_CODE_CREATED).json(savedCard);
@@ -43,8 +47,12 @@ export const createCard = async (req: Request, res: Response) => {
 
 export const deleteCard = async (req: Request, res: Response) => {
   const { cardId } = req.params;
+  const userId = req.user._id;
   try {
     const foundCard = await Card.findById(cardId).orFail();
+    if (foundCard.owner.toString() !== userId) {
+      return res.status(403).json({ error: ERR_TEXT_INSUFFICIENT_RIGHTS });
+    }
     await foundCard.deleteOne();
     return res.status(SUCC_CODE_DEFAULT).json({ message: 'Карточка удалена' });
   } catch (error) {

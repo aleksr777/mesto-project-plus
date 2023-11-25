@@ -8,3 +8,4 @@ export const ERR_TEXT_NOT_FOUND_JWT_SECRET = 'Недействительный �
 export const ERR_TEXT_INVALID_TOKEN = 'Недействительный токен!';
 export const ERR_TEXT_TOKEN_NOT_PROVIDED = 'Токен не предоставлен!';
 export const ERR_TEXT_UNAUTH_ERROR = 'Неправильные почта или пароль!';
+export const ERR_TEXT_INSUFFICIENT_RIGHTS = 'Недостаточно прав для выполнения операции!';
