@@ -10,10 +10,12 @@ import {
   SUCC_CODE_CREATED,
   ERR_CODE_DEFAULT,
   ERR_CODE_UNAUTH_ERROR,
+  ERR_CODE_CONFLICT,
 } from '../constants/http-codes';
 import {
   ERR_TEXT_DEFAULT,
   ERR_TEXT_UNAUTH_ERROR,
+  ERR_TEXT_CONFLICT_EMAIL,
 } from '../constants/error-text';
 import {
   handleDefaultError,
@@ -46,6 +48,10 @@ export const createUser = async (req: Request, res: Response) => {
     name, about, avatar, email, password,
   } = req.body;
   try {
+    const existingUser = await User.findOne({ email });
+    if (existingUser) {
+      return res.status(ERR_CODE_CONFLICT).json({ message: ERR_TEXT_CONFLICT_EMAIL });
+    }
     const hashedPassword = await bcrypt.hash(password, 10);
     const newUser = await User.create({
       name,
