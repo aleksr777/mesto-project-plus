@@ -18,9 +18,8 @@ import {
 import {
   handleDefaultError,
   handleValidationError,
-  handleCastError,
-  handleNotFoundIdError,
 } from '../utils/handle-errors';
+import findUserById from '../utils/find-user-by-id';
 
 export const getUsers = async (_req: Request, res: Response) => {
   try {
@@ -34,28 +33,12 @@ export const getUsers = async (_req: Request, res: Response) => {
 
 export const getCurrentUser = async (req: Request, res: Response) => {
   const userId = req.user._id;
-  try {
-    const userById = await User.findById(userId).orFail();
-    return res.status(SUCC_CODE_DEFAULT).json(userById);
-  } catch (error) {
-    logError(error);
-    if (error instanceof Error.CastError) return handleCastError(res);
-    if (error instanceof Error.DocumentNotFoundError) return handleNotFoundIdError(res);
-    return handleDefaultError(res);
-  }
+  await findUserById(userId, res);
 };
 
 export const getUserById = async (req: Request, res: Response) => {
   const { userId } = req.params;
-  try {
-    const userById = await User.findById(userId).orFail();
-    return res.status(SUCC_CODE_DEFAULT).json(userById);
-  } catch (error) {
-    logError(error);
-    if (error instanceof Error.CastError) return handleCastError(res);
-    if (error instanceof Error.DocumentNotFoundError) return handleNotFoundIdError(res);
-    return handleDefaultError(res);
-  }
+  await findUserById(userId, res);
 };
 
 export const createUser = async (req: Request, res: Response) => {
