@@ -1,5 +1,5 @@
 import { Response } from 'express';
-import { Error } from 'mongoose';
+import { Schema, Error } from 'mongoose';
 import Card from '../models/card-model';
 import logErrorMessage from './log-error-message';
 import { SUCC_CODE_DEFAULT } from '../constants/http-codes';
@@ -7,7 +7,7 @@ import handleErrors from './handle-errors';
 
 const updateCardData = async (
   cardId: string,
-  userId: string,
+  userId: Schema.Types.ObjectId | string,
   res: Response,
   action: 'add like' | 'remove like',
 ) => {

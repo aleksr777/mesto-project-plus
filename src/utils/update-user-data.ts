@@ -1,12 +1,12 @@
 import { Response } from 'express';
-import { Error } from 'mongoose';
+import { Schema, Error } from 'mongoose';
 import User, { IUser } from '../models/user-model';
 import logErrorMessage from './log-error-message';
 import { SUCC_CODE_DEFAULT } from '../constants/http-codes';
 import handleErrors from './handle-errors';
 
 const updateUserData = async (
-  userId: string,
+  userId: Schema.Types.ObjectId | string,
   updateData: Partial<IUser>,
   res: Response,
 ) => {

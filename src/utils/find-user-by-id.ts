@@ -1,5 +1,5 @@
 import { Response } from 'express';
-import { Error } from 'mongoose';
+import { Schema, Error } from 'mongoose';
 import User from '../models/user-model';
 import logErrorMessage from './log-error-message';
 import {
@@ -7,7 +7,10 @@ import {
 } from '../constants/http-codes';
 import handleErrors from './handle-errors';
 
-export default async function findUserById(userId:string, res:Response) {
+export default async function findUserById(
+  userId:Schema.Types.ObjectId | string,
+  res:Response,
+) {
   const { CastError, DocumentNotFoundError } = Error;
   try {
     const userById = await User.findById(userId).orFail();
