@@ -1,13 +1,9 @@
 import { Response } from 'express';
 import { Error } from 'mongoose';
 import User, { IUser } from '../models/user-model';
-import logError from './log-error';
+import logErrorMessage from './log-error-message';
 import { SUCC_CODE_DEFAULT } from '../constants/http-codes';
-import {
-  handleDefaultError,
-  handleValidationError,
-  handleNotFoundIdError,
-} from './handle-errors';
+import handleErrors from './handle-errors';
 
 const updateUserData = async (
   userId: string,
@@ -22,10 +18,10 @@ const updateUserData = async (
     ).orFail();
     return res.status(SUCC_CODE_DEFAULT).json(updatedUser);
   } catch (error) {
-    if (error instanceof Error.ValidationError) return handleValidationError(res);
-    if (error instanceof Error.DocumentNotFoundError) return handleNotFoundIdError(res);
-    logError(error);
-    return handleDefaultError(res);
+    if (error instanceof Error.ValidationError) return handleErrors(res, 'validation');
+    if (error instanceof Error.DocumentNotFoundError) return handleErrors(res, 'not-found-id');
+    logErrorMessage(error);
+    return handleErrors(res);
   }
 };
 

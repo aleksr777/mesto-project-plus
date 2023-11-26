@@ -2,25 +2,14 @@ import { Request, Response } from 'express';
 import { Error } from 'mongoose';
 import bcrypt from 'bcrypt';
 import User from '../models/user-model';
-import logError from '../utils/log-error';
+import logErrorMessage from '../utils/log-error-message';
 import updateUserData from '../utils/update-user-data';
-import { createToken } from '../middlewares/auth';
+import { createToken } from '../middlewares/auth-middleware';
 import {
   SUCC_CODE_DEFAULT,
   SUCC_CODE_CREATED,
-  ERR_CODE_DEFAULT,
-  ERR_CODE_UNAUTH_ERROR,
-  ERR_CODE_CONFLICT,
 } from '../constants/http-codes';
-import {
-  ERR_TEXT_DEFAULT,
-  ERR_TEXT_UNAUTH_ERROR,
-  ERR_TEXT_CONFLICT_EMAIL,
-} from '../constants/error-text';
-import {
-  handleDefaultError,
-  handleValidationError,
-} from '../utils/handle-errors';
+import handleErrors from '../utils/handle-errors';
 import findUserById from '../utils/find-user-by-id';
 
 export const getUsers = async (_req: Request, res: Response) => {
@@ -28,8 +17,8 @@ export const getUsers = async (_req: Request, res: Response) => {
     const users = await User.find();
     return res.status(SUCC_CODE_DEFAULT).json(users);
   } catch (error) {
-    logError(error);
-    return handleDefaultError(res);
+    logErrorMessage(error);
+    return handleErrors(res);
   }
 };
 
@@ -50,7 +39,7 @@ export const createUser = async (req: Request, res: Response) => {
   try {
     const existingUser = await User.findOne({ email });
     if (existingUser) {
-      return res.status(ERR_CODE_CONFLICT).json({ message: ERR_TEXT_CONFLICT_EMAIL });
+      return handleErrors(res, 'conflict-email');
     }
     const hashedPassword = await bcrypt.hash(password, 10);
     const newUser = await User.create({
@@ -62,9 +51,9 @@ export const createUser = async (req: Request, res: Response) => {
     });
     return res.status(SUCC_CODE_CREATED).json(newUser);
   } catch (error) {
-    logError(error);
-    if (error instanceof Error.ValidationError) return handleValidationError(res);
-    return handleDefaultError(res);
+    logErrorMessage(error);
+    if (error instanceof Error.ValidationError) return handleErrors(res, 'validation');
+    return handleErrors(res);
   }
 };
 
@@ -82,14 +71,12 @@ export const login = async (req: Request, res: Response) => {
   try {
     const { email, password } = req.body;
     const user = await User.findOne({ email }).select('+password');
-    if (!user || !(await bcrypt.compare(password, user.password))) {
-      return res.status(ERR_CODE_UNAUTH_ERROR).json({ message: ERR_TEXT_UNAUTH_ERROR });
-    }
+    if (!user || !(await bcrypt.compare(password, user.password))) return handleErrors(res, 'unauth');
     const token = createToken(user._id.toString());
     res.cookie('token', token, { httpOnly: true, sameSite: 'strict' });
     return res.status(SUCC_CODE_DEFAULT).send();
   } catch (error) {
-    logError(error);
-    return res.status(ERR_CODE_DEFAULT).json({ message: ERR_TEXT_DEFAULT });
+    logErrorMessage(error);
+    return handleErrors(res);
   }
 };

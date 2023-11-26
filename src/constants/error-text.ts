@@ -10,3 +10,4 @@ export const ERR_TEXT_TOKEN_NOT_PROVIDED = 'Токен не предоставл
 export const ERR_TEXT_UNAUTH_ERROR = 'Неправильные почта или пароль!';
 export const ERR_TEXT_INSUFFICIENT_RIGHTS = 'Недостаточно прав для выполнения операции!';
 export const ERR_TEXT_CONFLICT_EMAIL = 'Пользователь с таким email уже существует!';
+export const ERR_TEXT_REQUEST_LOG_WRITE = 'Ошибка записи в лог запросов: ';

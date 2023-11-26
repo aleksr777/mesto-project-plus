@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import { authenticateToken } from '../middlewares/auth';
+import { authenticateToken } from '../middlewares/auth-middleware';
 import {
   getAllCards,
   createCard,

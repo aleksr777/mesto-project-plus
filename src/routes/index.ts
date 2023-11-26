@@ -2,7 +2,7 @@ import { Router } from 'express';
 import homeRouter from './home-router';
 import cardsRouter from './cards-router';
 import usersRouter from './users-router';
-import { handleNotFoundPageError } from '../utils/handle-errors';
+import handleErrors from '../utils/handle-errors';
 import {
   login,
   createUser,
@@ -15,6 +15,6 @@ routes.post('/signin', login);
 routes.post('/signup', createUser);
 routes.use('/users', usersRouter);
 routes.use('/cards', cardsRouter);
-routes.use('*', (_req, res) => handleNotFoundPageError(res));
+routes.use('*', (_req, res) => handleErrors(res, 'not-found-page'));
 
 export default routes;
