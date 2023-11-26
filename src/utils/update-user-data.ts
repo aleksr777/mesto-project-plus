@@ -10,6 +10,7 @@ const updateUserData = async (
   updateData: Partial<IUser>,
   res: Response,
 ) => {
+  const { ValidationError, DocumentNotFoundError } = Error;
   try {
     const updatedUser = await User.findByIdAndUpdate(
       userId,
@@ -18,8 +19,8 @@ const updateUserData = async (
     ).orFail();
     return res.status(SUCC_CODE_DEFAULT).json(updatedUser);
   } catch (error) {
-    if (error instanceof Error.ValidationError) return handleErrors(res, 'validation');
-    if (error instanceof Error.DocumentNotFoundError) return handleErrors(res, 'not-found-id');
+    if (error instanceof ValidationError) return handleErrors(res, 'validation');
+    if (error instanceof DocumentNotFoundError) return handleErrors(res, 'not-found-id');
     logErrorMessage(error);
     return handleErrors(res);
   }

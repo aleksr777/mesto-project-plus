@@ -8,13 +8,14 @@ import {
 import handleErrors from './handle-errors';
 
 export default async function findUserById(userId:string, res:Response) {
+  const { CastError, DocumentNotFoundError } = Error;
   try {
     const userById = await User.findById(userId).orFail();
     return res.status(SUCC_CODE_DEFAULT).json(userById);
   } catch (error) {
     logErrorMessage(error);
-    if (error instanceof Error.CastError) return handleErrors(res, 'cast');
-    if (error instanceof Error.DocumentNotFoundError) return handleErrors(res, 'not-found-id');
+    if (error instanceof CastError) return handleErrors(res, 'cast');
+    if (error instanceof DocumentNotFoundError) return handleErrors(res, 'not-found-id');
     return handleErrors(res);
   }
 }

@@ -33,6 +33,7 @@ export const getUserById = async (req: Request, res: Response) => {
 };
 
 export const createUser = async (req: Request, res: Response) => {
+  const { ValidationError } = Error;
   const {
     name, about, avatar, email, password,
   } = req.body;
@@ -52,7 +53,8 @@ export const createUser = async (req: Request, res: Response) => {
     return res.status(SUCC_CODE_CREATED).json(newUser);
   } catch (error) {
     logErrorMessage(error);
-    if (error instanceof Error.ValidationError) return handleErrors(res, 'validation');
+    if (typeof error === 'object' && error !== null && 'code' in error && error.code === 11000) return handleErrors(res, 'conflict-email');
+    if (error instanceof ValidationError) return handleErrors(res, 'validation');
     return handleErrors(res);
   }
 };

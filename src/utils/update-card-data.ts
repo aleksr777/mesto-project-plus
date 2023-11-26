@@ -11,6 +11,7 @@ const updateCardData = async (
   res: Response,
   action: 'add like' | 'remove like',
 ) => {
+  const { CastError, DocumentNotFoundError } = Error;
   let update;
   switch (action) {
   case 'add like':
@@ -29,8 +30,8 @@ const updateCardData = async (
     return res.status(SUCC_CODE_DEFAULT).json(updatedCard);
   } catch (error) {
     logErrorMessage(error);
-    if (error instanceof Error.CastError) return handleErrors(res, 'cast');
-    if (error instanceof Error.DocumentNotFoundError) return handleErrors(res, 'not-found-id');
+    if (error instanceof CastError) return handleErrors(res, 'cast');
+    if (error instanceof DocumentNotFoundError) return handleErrors(res, 'not-found-id');
     return handleErrors(res);
   }
 };
