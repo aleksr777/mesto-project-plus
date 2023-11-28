@@ -1,16 +1,17 @@
-import { Response } from 'express';
-import { Schema, Error } from 'mongoose';
+import { Request, Response, NextFunction } from 'express';
+import { Error } from 'mongoose';
 import User, { IUser } from '../models/user-model';
 import logErrorMessage from './log-error-message';
 import { SUCC_CODE_DEFAULT } from '../constants/http-codes';
-import handleErrors from './handle-errors';
 
 const updateUserData = async (
-  userId: Schema.Types.ObjectId | string,
-  updateData: Partial<IUser>,
+  req: Request,
   res: Response,
+  next: NextFunction,
+  updateData: Partial<IUser>,
 ) => {
   const { ValidationError, DocumentNotFoundError } = Error;
+  const userId = req.user._id;
   try {
     const updatedUser = await User.findByIdAndUpdate(
       userId,
@@ -19,10 +20,14 @@ const updateUserData = async (
     ).orFail();
     return res.status(SUCC_CODE_DEFAULT).json(updatedUser);
   } catch (error) {
-    if (error instanceof ValidationError) return handleErrors(res, 'validation');
-    if (error instanceof DocumentNotFoundError) return handleErrors(res, 'not-found-id');
     logErrorMessage(error);
-    return handleErrors(res);
+    if (error instanceof ValidationError) {
+      return next(new Error('validation'));
+    }
+    if (error instanceof DocumentNotFoundError) {
+      return next(new Error('not-found-id'));
+    }
+    return next(error);
   }
 };
 

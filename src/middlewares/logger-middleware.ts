@@ -3,7 +3,6 @@ import { Request, Response, NextFunction } from 'express';
 import {
   ERR_TEXT_REQUEST_LOG_WRITE,
 } from '../constants/error-text';
-import handleErrors from '../utils/handle-errors';
 
 const logRequest = async (req: Request, _res: Response, next: NextFunction) => {
   const log = {
@@ -41,10 +40,7 @@ const logError = async (
   } catch (error) {
     console.error(ERR_TEXT_REQUEST_LOG_WRITE, error);
   }
-  if (!res.headersSent) {
-    return handleErrors(res);
-  }
-  return next();
+  next(err);
 };
 
 export { logRequest, logError };

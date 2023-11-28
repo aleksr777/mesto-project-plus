@@ -16,3 +16,6 @@ node_modules
 
 # Typescript build result
 dist
+
+# Environment variables
+.env
