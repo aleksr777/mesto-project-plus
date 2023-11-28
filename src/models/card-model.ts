@@ -1,11 +1,11 @@
-import { model, Schema } from 'mongoose';
+import { model, Schema, Types } from 'mongoose';
 import urlRegex from '../constants/url-regex';
 
 export interface ICard {
   name: string;
   link: string;
-  owner: Schema.Types.ObjectId;
-  likes?: Schema.Types.ObjectId[];
+  owner: Types.ObjectId;
+  likes?: Types.ObjectId[];
   createdAt?: Date;
 }
 
@@ -27,16 +27,16 @@ const cardSchema = new Schema<ICard>({
   },
   owner: {
     type: Schema.Types.ObjectId,
+    ref: 'user',
     required: true,
   },
   likes: {
     type: [Schema.Types.ObjectId],
-    required: true,
+    ref: 'user',
     default: [],
   },
   createdAt: {
     type: Date,
-    required: true,
     default: Date.now,
   },
 });
