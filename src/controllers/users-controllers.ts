@@ -10,6 +10,10 @@ import {
   SUCC_CODE_CREATED,
 } from '../constants/http-codes';
 import findUserById from '../utils/find-user-by-id';
+import { ERR_TEXT_CONFLICT_EMAIL, ERR_TEXT_LOGIN_IMPOSSIBLE } from '../constants/error-text';
+import ConflictErr from '../errors/conflict-err';
+import BadRequestErr from '../errors/bad-request-err';
+import UnauthErr from '../errors/unauth-err';
 
 export const getUsers = async (
   _req: Request,
@@ -51,7 +55,7 @@ export const createUser = async (req: Request, res: Response, next: NextFunction
   try {
     const existingUser = await User.findOne({ email });
     if (existingUser) {
-      return next(new Error('conflict-email'));
+      return next(new ConflictErr(ERR_TEXT_CONFLICT_EMAIL));
     }
     const hashedPassword = await bcrypt.hash(password, 10);
     const newUser = await User.create({
@@ -65,10 +69,10 @@ export const createUser = async (req: Request, res: Response, next: NextFunction
   } catch (error) {
     logErrorMessage(error);
     if (error instanceof ValidationError) {
-      return next(new Error('validation'));
+      return next(new BadRequestErr());
     }
     if (typeof error === 'object' && error !== null && 'code' in error && error.code === 11000) {
-      return next(new Error('conflict-email'));
+      return next(new ConflictErr(ERR_TEXT_CONFLICT_EMAIL));
     }
     return next(error);
   }
@@ -97,11 +101,16 @@ export const login = async (req: Request, res: Response, next: NextFunction) => 
     const { email, password } = req.body;
     const user = await User.findOne({ email }).select('+password');
     if (!user || !(await bcrypt.compare(password, user.password))) {
-      return next(new Error('unauth'));
+      return next(new UnauthErr(ERR_TEXT_LOGIN_IMPOSSIBLE));
     }
     const token = createToken(user._id.toString());
     res.cookie('token', token, { httpOnly: true, sameSite: 'strict' });
-    return res.status(SUCC_CODE_DEFAULT).send();
+    return res.status(SUCC_CODE_DEFAULT).send({
+      _id: user._id,
+      name: user.name,
+      about: user.about,
+      avatar: user.avatar,
+    });
   } catch (error) {
     logErrorMessage(error);
     return next(error);

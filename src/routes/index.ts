@@ -6,6 +6,8 @@ import {
   login,
   createUser,
 } from '../controllers/users-controllers';
+import NotFoundErr from '../errors/not-found-err';
+import { ERR_TEXT_NOT_FOUND_PAGE } from '../constants/error-text';
 
 const routes = Router();
 
@@ -15,7 +17,7 @@ routes.post('/signup', createUser);
 routes.use('/users', usersRouter);
 routes.use('/cards', cardsRouter);
 routes.use('*', (_req, _res, next) => {
-  next(new Error('not-found-page'));
+  next(new NotFoundErr(ERR_TEXT_NOT_FOUND_PAGE));
 });
 
 export default routes;
