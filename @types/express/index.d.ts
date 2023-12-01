@@ -1,10 +1,10 @@
-import { Schema } from 'mongoose';
+import idType from '../../src/types/id-type';
 /* eslint-disable no-unused-vars */
 declare global {
   namespace Express {
     interface Request {
       user: {
-        _id: string | Schema.Types.ObjectId;
+        _id: idType;
       };
     }
   }

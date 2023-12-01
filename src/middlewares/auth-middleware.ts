@@ -1,5 +1,4 @@
 import { Request, Response, NextFunction } from 'express';
-import { Schema } from 'mongoose';
 import jwt from 'jsonwebtoken';
 import logErrorMessage from '../utils/log-error-message';
 import {
@@ -9,9 +8,10 @@ import {
 } from '../constants/error-text';
 import NotFoundErr from '../errors/not-found-err';
 import UnauthErr from '../errors/unauth-err';
+import idType from '../types/id-type';
 
 interface TokenPayload extends jwt.JwtPayload {
-  _id: string;
+  _id: idType;
 }
 
 const secret = process.env.JWT_SECRET;
@@ -19,7 +19,7 @@ if (!secret) {
   throw new NotFoundErr(ERR_TEXT_NOT_FOUND_JWT_SECRET);
 }
 
-export const createToken = (userId: Schema.Types.ObjectId | string): string => jwt.sign({ _id: userId }, secret, { expiresIn: '1w' });
+export const createToken = (userId: idType): string => jwt.sign({ _id: userId }, secret, { expiresIn: '1w' });
 
 export const verifyToken = (token: string): TokenPayload | null => {
   try {
