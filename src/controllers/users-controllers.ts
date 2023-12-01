@@ -53,10 +53,6 @@ export const createUser = async (req: Request, res: Response, next: NextFunction
     name, about, avatar, email, password,
   } = req.body;
   try {
-    const existingUser = await User.findOne({ email });
-    if (existingUser) {
-      return next(new ConflictErr(ERR_TEXT_CONFLICT_EMAIL));
-    }
     const hashedPassword = await bcrypt.hash(password, 10);
     const newUser = await User.create({
       name,
